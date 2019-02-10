@@ -65,9 +65,9 @@ public class ShopImpl implements Shop{
     }
 
     public void addNewProduct(Product product, int quantity, float price) throws ProductAlreadyExistsException, ShopIsClosedException {
-        if (products.containsKey(products.getBarCode())) {
+        if (products.containsKey(product.getBarCode())) {
             for (ShopImpl.ShopEntryImpl element : products.values()) {
-                if (barcode == (element.getProduct().getBarCode())) {
+                if (product.getBarCode() == (element.getProduct().getBarCode())) {
                     element.setProduct(product);
                     element.setQuantity(quantity);
                     element.setPrice(price);
@@ -87,7 +87,7 @@ public class ShopImpl implements Shop{
     }
 
     public Product buyProduct(long barcode) throws NoSuchProductException, OutOfStockException, ShopIsClosedException {
-        if (products.containsKey(products.getBarCode())) {
+        if (products.containsKey(barcode)) {
             for (ShopImpl.ShopEntryImpl element : products.values()) {
                 if (barcode == (element.getProduct().getBarCode())) {
                     if (element.getQuantity() == 0) {
@@ -105,7 +105,7 @@ public class ShopImpl implements Shop{
 
     public List<Product> buyProducts(long barcode, int quantity) throws NoSuchProductException, OutOfStockException, ShopIsClosedException {
         List<Product> boughtProducts = new ArrayList<Product>();
-        if (products.containsKey(products.getBarCode())) {
+        if (products.containsKey(barcode)) {
             for (ShopImpl.ShopEntryImpl element : products.values()) {
                 if (barcode == (element.getProduct().getBarCode())) {
                     if (element.getQuantity() == 0) {
