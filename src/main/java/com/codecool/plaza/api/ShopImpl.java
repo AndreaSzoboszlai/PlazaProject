@@ -7,6 +7,7 @@ public class ShopImpl implements Shop{
     private String name;
     private String owner;
     private Map<Long, ShopImpl.ShopEntryImpl> products;
+    private boolean isOpen;
 
     public ShopImpl(String name, String owner) {
         this.name = name;
@@ -23,15 +24,15 @@ public class ShopImpl implements Shop{
     }
 
     public boolean isOpen() {
-        return false;
+        return isOpen;
     }
 
     public void open() {
-
+        isOpen = true;
     }
 
     public void close() {
-
+        isOpen = false;
     }
 
     public List<Product> getProducts() throws ShopIsClosedException {

@@ -138,6 +138,7 @@ public class CmdProgram {
     }
 
     public void shopMenuByName(Shop shop) {
+        while(true) {
         System.out.println("Hi! This is the " + shop.getName() + " , welcome! Press\n" +
                 "1) to list available products.\n" +
                 "2) to find products by name.\n" +
@@ -150,7 +151,6 @@ public class CmdProgram {
                 "9) check price by barcode\n" +
                 "10) exit from shop.");
 
-        while(true) {
             switch (reader.nextLine()) {
                 case "1": try {
                             listProducts(shop.getProducts());
