@@ -24,7 +24,7 @@ public abstract class Product {
     }
 
     public String toString() {
-        return "";
+        return "Barcode: " + barcode + "Name: " + name + "Manufacturer: " + manufacturer;
     }
 
 }

@@ -5,13 +5,20 @@ import java.util.ArrayList;
 
 public class PlazaImpl implements Plaza {
     private List<Shop> shops;
+    private String name;
+    private boolean isOpen;
 
-    public PlazaImpl() {
-        shops = new ArrayList<Shop>();
+    public PlazaImpl(String name) {
+        this.shops = new ArrayList<Shop>();
+        this.name = name;
+        this.isOpen = false;
     }
 
     public List<Shop> getShops() throws PlazaIsClosedException {
-        return shops;
+        if (isOpen() == true) {
+            return shops;
+        }
+        throw new PlazaIsClosedException();
     }
 
     public void addShop(Shop shop) throws ShopAlreadyExistsException, PlazaIsClosedException {
@@ -42,14 +49,18 @@ public class PlazaImpl implements Plaza {
     }
 
     public boolean isOpen() {
-        return false;
+        return isOpen;
     }
 
     public void open() {
-
+        isOpen = true;
     }
 
     public void close() {
+        isOpen = false;
+    }
 
+    public String getName() {
+        return name;
     }
 }

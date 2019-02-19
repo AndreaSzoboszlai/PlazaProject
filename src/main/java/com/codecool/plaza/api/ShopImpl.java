@@ -48,7 +48,7 @@ public class ShopImpl implements Shop{
                 return element.getProduct();
             }
         }
-        throw NoSuchProductException;
+        throw new NoSuchProductException();
     }
 
     public float getPrice(long barcode) throws NoSuchProductException, ShopIsClosedException {
@@ -98,9 +98,9 @@ public class ShopImpl implements Shop{
                     }
                 }
             }
-        } else {
-            throw new NoSuchProductException();
         }
+        throw new NoSuchProductException();
+
     }
 
     public List<Product> buyProducts(long barcode, int quantity) throws NoSuchProductException, OutOfStockException, ShopIsClosedException {
@@ -176,8 +176,9 @@ public class ShopImpl implements Shop{
             this.price = price;
         }
 
-        public String toString() {
-            return "";
-        }
+
+    }
+    public String toString() {
+        return "Shop's name: " + name + " Owner: " + owner;
     }
 }
