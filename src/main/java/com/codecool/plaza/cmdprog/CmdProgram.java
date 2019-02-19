@@ -3,7 +3,9 @@ package com.codecool.plaza.cmdprog;
 import com.codecool.plaza.api.*;
 
 import java.sql.SQLOutput;
-import java.util.ArrayList;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -174,14 +176,34 @@ public class CmdProgram {
                 case "5": shop.close();
                         System.out.println("Shop is closed now.");
                         break;
-                case "6": //shop.addNewProduct();
+                case "6":
+                        System.out.println("Quantity: ");
+                        int quantity = Integer.valueOf(reader.nextLine());
+                        System.out.println("Price: ");
+                        int price = Integer.valueOf(reader.nextLine());
+                        try {
+                            shop.addNewProduct(addOne(), quantity, price);
+                        } catch (ProductAlreadyExistsException | ShopIsClosedException ex) {
+                            System.out.println(ex.getMessage());
+                        }
                         break;
-                case "7": //shop.addProduct();
+                case "7":
+                        System.out.println("Product's barcode: ");
+                        long barcode = Long.valueOf(reader.nextLine());
+                        System.out.println("Quantity: ");
+                        int quantity2 = Integer.valueOf(reader.nextLine());
+                        try {
+                            shop.addProduct(barcode, quantity2);
+                        } catch (NoSuchProductException | ShopIsClosedException ex) {
+                            System.out.println(ex.getMessage());
+                        }
                         break;
                 case "8": buyByBarcode(shop);
                         break;
                 case "9": checkPriceByBarcode(shop);
-                case "10": break;
+                        break;
+                case "10": shopMenu();
+                        break;
                 default: System.out.println("No option like that");
                         break;
             }
@@ -202,14 +224,40 @@ public class CmdProgram {
     }
 
     public Product addOne() {
+        Product product;
         System.out.println("Create a product: ");
         System.out.println("1. Food product \n2. Clothing product\n ");
         String chosen;
+        System.out.println("Product's barcode: ");
+        long barcode = Long.valueOf(reader.nextLine());
+        System.out.println("Product's name: ");
+        String name = reader.nextLine();
+        System.out.println("Products's manufacturer: ");
+        String manufacturer = reader.nextLine();
         while (true) {
             chosen = reader.nextLine();
             switch (chosen) {
-                case "1": break;
-                case "2": break;
+                case "1":
+                    System.out.println("Calories: ");
+                    int calories = Integer.valueOf(reader.nextLine());
+                    System.out.println("BestBefore: ");
+                    String dateS = reader.nextLine();
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+                    try {
+                        Date date = formatter.parse(dateS);
+                        product = new FoodProduct(barcode, name, manufacturer, calories, date);
+                        return product;
+                    } catch (ParseException ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                    break;
+                case "2": System.out.println("Material: ");
+                    String material = reader.nextLine();
+                    System.out.println("Type: ");
+                    String type = reader.nextLine();
+                    product = new ClothingProduct(barcode, name, manufacturer, material, type);
+                    return product;
+
                 default:
                     System.out.println("not a valid option");
             }
