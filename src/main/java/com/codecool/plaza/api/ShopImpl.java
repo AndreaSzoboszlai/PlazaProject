@@ -39,7 +39,9 @@ public class ShopImpl implements Shop{
         if (isOpen == true) {
             List<Product> produCTS = new ArrayList<Product>();
             for (ShopImpl.ShopEntryImpl element : products.values()) {
-                produCTS.add(element.getProduct());
+                if(element.getQuantity() >= 1) {
+                    produCTS.add(element.getProduct());
+                }
             }
             return produCTS;
         } else {

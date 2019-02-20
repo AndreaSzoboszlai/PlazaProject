@@ -229,7 +229,7 @@ public class CmdProgram {
 
     public Product addOne() {
         Product product;
-        System.out.println("Create a product: ");
+        //System.out.println("Create a product: ");
 
         String chosen;
         System.out.println("Product's barcode: ");
@@ -239,13 +239,14 @@ public class CmdProgram {
         System.out.println("Products's manufacturer: ");
         String manufacturer = reader.nextLine();
         while (true) {
-            chosen = reader.nextLine();
+
             System.out.println("1. Food product \n2. Clothing product\n ");
+            chosen = reader.nextLine();
             switch (chosen) {
                 case "1":
                     System.out.println("Calories: ");
                     int calories = Integer.valueOf(reader.nextLine());
-                    System.out.println("BestBefore: ");
+                    System.out.println("BestBefore (format: 01-01-2019): ");
                     String dateS = reader.nextLine();
                     SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
                     try {
