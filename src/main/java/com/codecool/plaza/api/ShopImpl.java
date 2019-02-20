@@ -209,8 +209,9 @@ public class ShopImpl implements Shop{
         }
 
 
+
     }
     public String toString() {
-        return "Shop's name: " + name + " Owner: " + owner;
+        return "Shop's name: " + name + ", Owner: " + owner;
     }
 }

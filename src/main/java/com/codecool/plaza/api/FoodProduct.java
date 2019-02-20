@@ -30,6 +30,6 @@ public class FoodProduct extends Product {
     }
 
     public String toString() {
-        return getBarCode() + ", " + getName() + ", " + getManufacturer() + ", " + calories + ", " + bestBefore;
+        return "Barcode: " + getBarCode() + ", Name: " + getName() + ", Manufacturer: " + getManufacturer() + ", Calories: " + calories + ", Bestbefore: " + bestBefore;
     }
 }
