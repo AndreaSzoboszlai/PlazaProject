@@ -34,7 +34,8 @@ public class CmdProgram {
                     plaza = new PlazaImpl(reader.nextLine());
                     shopMenu();
                     break;
-            case 2: break;
+            case 2: System.exit(0);
+                    break;
         }
     }
 
@@ -114,6 +115,9 @@ public class CmdProgram {
             for (Shop shop : shops) {
                 System.out.println(shop);
             }
+            if (shops == null) {
+                System.out.println("No shop exits yet, you can create a new one.");
+            }
         } catch (PlazaIsClosedException e) {
             System.out.println(e.getMessage());
         }
@@ -166,7 +170,7 @@ public class CmdProgram {
                         } catch (NoSuchProductException | ShopIsClosedException ex) {
                             System.out.println(ex.getMessage());
                         }
-
+                        break;
                 case "3":
                         System.out.println(shop.getOwner());
                         break;
@@ -226,7 +230,7 @@ public class CmdProgram {
     public Product addOne() {
         Product product;
         System.out.println("Create a product: ");
-        System.out.println("1. Food product \n2. Clothing product\n ");
+
         String chosen;
         System.out.println("Product's barcode: ");
         long barcode = Long.valueOf(reader.nextLine());
@@ -236,6 +240,7 @@ public class CmdProgram {
         String manufacturer = reader.nextLine();
         while (true) {
             chosen = reader.nextLine();
+            System.out.println("1. Food product \n2. Clothing product\n ");
             switch (chosen) {
                 case "1":
                     System.out.println("Calories: ");
@@ -281,7 +286,7 @@ public class CmdProgram {
         System.out.println("Product's barcode: ");
         long barcode = Long.valueOf(reader.nextLine());
         try {
-            System.out.println(shop.getPrice(barcode));
+            System.out.println("Price:" + shop.getPrice(barcode));
         } catch (NoSuchProductException | ShopIsClosedException ex) {
             System.out.println(ex.getMessage());
         }

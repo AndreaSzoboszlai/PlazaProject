@@ -24,13 +24,13 @@ public class PlazaImpl implements Plaza {
     public void addShop(Shop shop) throws ShopAlreadyExistsException, PlazaIsClosedException {
         try {
             findShopByName(shop.getName());
+            throw new ShopAlreadyExistsException();
+        } catch (NoSuchShopException ex) {
             if (isOpen == true) {
                 shops.add(shop);
             } else {
                 throw new PlazaIsClosedException();
             }
-        } catch (NoSuchShopException ex) {
-            throw new ShopAlreadyExistsException();
         }
 
     }
