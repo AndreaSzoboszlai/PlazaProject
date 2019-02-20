@@ -28,6 +28,7 @@ public class PlazaImpl implements Plaza {
         } catch (NoSuchShopException ex) {
             if (isOpen == true) {
                 shops.add(shop);
+                System.out.println("so the shop is created.");
             } else {
                 throw new PlazaIsClosedException();
             }
