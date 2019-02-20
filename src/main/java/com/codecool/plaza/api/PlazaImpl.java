@@ -22,30 +22,48 @@ public class PlazaImpl implements Plaza {
     }
 
     public void addShop(Shop shop) throws ShopAlreadyExistsException, PlazaIsClosedException {
-        shops.add(shop);
+        try {
+            findShopByName(shop.getName());
+            if (isOpen == true) {
+                shops.add(shop);
+            } else {
+                throw new PlazaIsClosedException();
+            }
+        } catch (NoSuchShopException ex) {
+            throw new ShopAlreadyExistsException();
+        }
+
     }
 
     public void removeShop(Shop shop) throws NoSuchShopException, PlazaIsClosedException {
-        Shop toRemove = null;
-        for (Shop element : shops) {
-            if (shop.equals(element)) {
-                toRemove = shop;
+        if (isOpen == true) {
+            Shop toRemove = null;
+            for (Shop element : shops) {
+                if (shop.equals(element)) {
+                    toRemove = shop;
+                }
             }
-        }
-        if (toRemove == null) {
-            throw new NoSuchShopException();
+            if (toRemove == null) {
+                throw new NoSuchShopException();
+            } else {
+                shops.remove(toRemove);
+            }
         } else {
-            shops.remove(toRemove);
+            throw new PlazaIsClosedException();
         }
     }
 
     public Shop findShopByName(String name) throws NoSuchShopException, PlazaIsClosedException {
-        for (Shop element : shops) {
-            if (name.equals(element.getName())) {
-                return element;
+        if (isOpen == true) {
+            for (Shop element : shops) {
+                if (name.equals(element.getName())) {
+                    return element;
+                }
             }
+            throw new NoSuchShopException();
+        } else {
+            throw new PlazaIsClosedException();
         }
-        throw new NoSuchShopException();
     }
 
     public boolean isOpen() {

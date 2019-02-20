@@ -36,90 +36,121 @@ public class ShopImpl implements Shop{
     }
 
     public List<Product> getProducts() throws ShopIsClosedException {
-        List<Product> produCTS = new ArrayList<Product>();
-        for (ShopImpl.ShopEntryImpl element : products.values()) {
-            produCTS.add(element.getProduct());
+        if (isOpen == true) {
+            List<Product> produCTS = new ArrayList<Product>();
+            for (ShopImpl.ShopEntryImpl element : products.values()) {
+                produCTS.add(element.getProduct());
+            }
+            return produCTS;
+        } else {
+            throw new ShopIsClosedException();
         }
-        return produCTS;
     }
 
     public Product findByName(String name) throws NoSuchProductException, ShopIsClosedException {
-        for (ShopImpl.ShopEntryImpl element : products.values()) {
-            if (name.equals(element.getProduct().getName())) {
-                return element.getProduct();
+        if (isOpen == true) {
+            for (ShopImpl.ShopEntryImpl element : products.values()) {
+                if (name.equals(element.getProduct().getName())) {
+                    return element.getProduct();
+                }
             }
+            throw new NoSuchProductException();
+        } else {
+            throw new ShopIsClosedException();
         }
-        throw new NoSuchProductException();
     }
 
     public float getPrice(long barcode) throws NoSuchProductException, ShopIsClosedException {
-        ShopImpl.ShopEntryImpl shopImpl = products.get(barcode);
-        return shopImpl.getPrice();
+        if (isOpen == true) {
+            ShopImpl.ShopEntryImpl shopImpl = products.get(barcode);
+            if (shopImpl == null) {
+                throw  new NoSuchProductException();
+            }
+            return shopImpl.getPrice();
+        } else {
+            throw new ShopIsClosedException();
+        }
     }
 
     public boolean hasProduct(long barcode) throws ShopIsClosedException {
-        ShopImpl.ShopEntryImpl shopImpl = products.get(barcode);
-        if (shopImpl != null) {
-            return true;
+        if (isOpen == true) {
+            ShopImpl.ShopEntryImpl shopImpl = products.get(barcode);
+            if (shopImpl != null) {
+                return true;
+            }
+            return false;
+        } else {
+            throw new ShopIsClosedException();
         }
-        return false;
     }
 
     public void addNewProduct(Product product, int quantity, float price) throws ProductAlreadyExistsException, ShopIsClosedException {
-        if (products.containsKey(product.getBarCode())) {
-            for (ShopImpl.ShopEntryImpl element : products.values()) {
-                if (product.getBarCode() == (element.getProduct().getBarCode())) {
-                    element.setProduct(product);
-                    element.setQuantity(quantity);
-                    element.setPrice(price);
-                }
+        if (isOpen == true) {
+            if (products.containsKey(product.getBarCode())) {
+                throw new ProductAlreadyExistsException();
+            } else {
+                products.put(product.getBarCode(), new ShopEntryImpl(product, quantity, price));
             }
         } else {
-            products.put(product.getBarCode(), new ShopEntryImpl(product, quantity, price));
+            throw new ShopIsClosedException();
         }
     }
 
     public void addProduct(long barcode, int quantity) throws NoSuchProductException, ShopIsClosedException {
-        for (ShopImpl.ShopEntryImpl element : products.values()) {
-            if (barcode == (element.getProduct().getBarCode())) {
-                element.increaseQuantity(quantity);
+        if (isOpen == true) {
+            if (hasProduct(barcode) == false) {
+                throw new NoSuchProductException();
             }
+            for (ShopImpl.ShopEntryImpl element : products.values()) {
+                if (barcode == (element.getProduct().getBarCode())) {
+                    element.increaseQuantity(quantity);
+                }
+            }
+        } else {
+            throw new ShopIsClosedException();
         }
     }
 
     public Product buyProduct(long barcode) throws NoSuchProductException, OutOfStockException, ShopIsClosedException {
-        if (products.containsKey(barcode)) {
-            for (ShopImpl.ShopEntryImpl element : products.values()) {
-                if (barcode == (element.getProduct().getBarCode())) {
-                    if (element.getQuantity() == 0) {
-                        throw new OutOfStockException();
-                    } else {
-                        element.decreaseQuantity(1);
-                        return element.getProduct();
+        if (isOpen == true) {
+            if (products.containsKey(barcode)) {
+                for (ShopImpl.ShopEntryImpl element : products.values()) {
+                    if (barcode == (element.getProduct().getBarCode())) {
+                        if (element.getQuantity() == 0) {
+                            throw new OutOfStockException();
+                        } else {
+                            element.decreaseQuantity(1);
+                            return element.getProduct();
+                        }
                     }
                 }
             }
+            throw new NoSuchProductException();
+        } else {
+            throw new ShopIsClosedException();
         }
-        throw new NoSuchProductException();
-
     }
 
     public List<Product> buyProducts(long barcode, int quantity) throws NoSuchProductException, OutOfStockException, ShopIsClosedException {
-        List<Product> boughtProducts = new ArrayList<Product>();
-        if (products.containsKey(barcode)) {
-            for (ShopImpl.ShopEntryImpl element : products.values()) {
-                if (barcode == (element.getProduct().getBarCode())) {
-                    if (element.getQuantity() == 0) {
-                        throw new OutOfStockException();
-                    } else {
-                        element.decreaseQuantity(quantity);
-                        boughtProducts.add(element.getProduct());
+        if (isOpen == true) {
+            List<Product> boughtProducts = new ArrayList<Product>();
+            if (products.containsKey(barcode)) {
+                for (ShopImpl.ShopEntryImpl element : products.values()) {
+                    if (barcode == (element.getProduct().getBarCode())) {
+                        if (element.getQuantity() == 0) {
+                            throw new OutOfStockException();
+                        } else {
+                            element.decreaseQuantity(quantity);
+                            boughtProducts.add(element.getProduct());
+                        }
                     }
                 }
+                return boughtProducts;
+            } else {
+                throw new NoSuchProductException();
             }
-            return boughtProducts;
         } else {
-            throw new NoSuchProductException();
+            throw  new ShopIsClosedException();
         }
     }
 
